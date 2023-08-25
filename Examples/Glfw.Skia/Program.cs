@@ -20,37 +20,33 @@
         
         static void Main(string[] args)
         {
-            using (Program.window = new NativeWindow(800, 600, "Skia Example"))
+            using (window = new NativeWindow(800, 600, "Skia Example"))
             {
-                Program.SubscribeToWindowEvents();
-                
-                using (var context = Program.GenerateSkiaContext(Program.window))
+                SubscribeToWindowEvents();
+
+                using var context = GenerateSkiaContext(window);
+                using var skiaSurface = GenerateSkiaSurface(context, window.ClientSize);
+                canvas = skiaSurface.Canvas;
+
+                while (!window.IsClosing)
                 {
-                    using (var skiaSurface = Program.GenerateSkiaSurface(context, Program.window.ClientSize))
-                    {
-                        Program.canvas = skiaSurface.Canvas;
-                        
-                        while (!Program.window.IsClosing)
-                        {
-                            Program.Render();
-                            Glfw.WaitEvents();
-                        }
-                    }
+                    Render();
+                    Glfw.WaitEvents();
                 }
             }
         }
 
         private static void SubscribeToWindowEvents()
         {
-            Program.window.SizeChanged += Program.OnWindowsSizeChanged;
-            Program.window.Refreshed += Program.OnWindowRefreshed;
-            Program.window.KeyPress += Program.OnWindowKeyPress;
-            Program.window.MouseMoved += Program.OnWindowMouseMoved;
+            window.SizeChanged += OnWindowsSizeChanged;
+            window.Refreshed += OnWindowRefreshed;
+            window.KeyPress += OnWindowKeyPress;
+            window.MouseMoved += OnWindowMouseMoved;
         }
 
         private static GRContext GenerateSkiaContext(NativeWindow nativeWindow)
         {
-            var nativeContext = Program.GetNativeContext(nativeWindow);
+            var nativeContext = GetNativeContext(nativeWindow);
             var glInterface = GRGlInterface.AssembleGlInterface(nativeContext, (contextHandle, name) => Glfw.GetProcAddress(name));
             return GRContext.Create(GRBackend.OpenGL, glInterface);
         }
@@ -89,47 +85,43 @@
         
         private static void Render()
         {
-            Program.canvas.Clear(SKColor.Parse("#F0F0F0"));
+            canvas.Clear(SKColor.Parse("#F0F0F0"));
             var headerPaint = new SKPaint {Color = SKColor.Parse("#333333"), TextSize = 50, IsAntialias = true};
-            Program.canvas.DrawText("Hello from GLFW.NET + SkiaSharp!", 10, 60, headerPaint);
+            canvas.DrawText("Hello from GLFW.NET + SkiaSharp!", 10, 60, headerPaint);
             
             var inputInfoPaint = new SKPaint {Color = SKColor.Parse("#F34336"), TextSize = 18, IsAntialias = true};
-            Program.canvas.DrawText($"Last key pressed: {Program.lastKeyPressed}", 10, 90, inputInfoPaint);
-            Program.canvas.DrawText($"Last mouse position: {Program.lastMousePosition}", 10, 120, inputInfoPaint);
+            canvas.DrawText($"Last key pressed: {lastKeyPressed}", 10, 90, inputInfoPaint);
+            canvas.DrawText($"Last mouse position: {lastMousePosition}", 10, 120, inputInfoPaint);
             
             var exitInfoPaint = new SKPaint {Color = SKColor.Parse("#3F51B5"), TextSize = 18, IsAntialias = true};
-            Program.canvas.DrawText("Press Enter to Exit.", 10, 160, exitInfoPaint);
-            
-            Program.canvas.Flush();
-            Program.window.SwapBuffers();
-        }
+            canvas.DrawText("Press Enter to Exit.", 10, 160, exitInfoPaint);
 
-        #region Window Events Handlers
+            canvas.Flush();
+            window.SwapBuffers();
+        }
 
         private static void OnWindowsSizeChanged(object sender, SizeChangeEventArgs e)
         {
-            Program.Render();
+            Render();
         }
         
         private static void OnWindowKeyPress(object sender, KeyEventArgs e)
         {
-            Program.lastKeyPressed = e.Key;
+            lastKeyPressed = e.Key;
             if (e.Key == Keys.Enter || e.Key == Keys.NumpadEnter)
             {
-                Program.window.Close();
+                window.Close();
             }
         }
 
         private static void OnWindowMouseMoved(object sender, MouseMoveEventArgs e)
         {
-            Program.lastMousePosition = e.Position;
+            lastMousePosition = e.Position;
         }
         
         private static void OnWindowRefreshed(object sender, EventArgs e)
         {
-            Program.Render();
+            Render();
         }
-
-        #endregion
     }
 }

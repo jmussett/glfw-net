@@ -1,9 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
-using JetBrains.Annotations;
 
 namespace OpenGL
 {
@@ -12,12 +12,10 @@ namespace OpenGL
     /// </summary>
     /// <param name="funcName">The name of the function to lookup.</param>
     public delegate IntPtr GetProcAddressHandler(string funcName);
-    
+
     /// <summary>
     ///     Provides bindings for OpenGL 3.3 Core Profile.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "InconsistentNaming")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "IdentifierTypo")]
     [SuppressUnmanagedCodeSecurity]
     public static unsafe partial class Gl
     {
@@ -345,7 +343,6 @@ namespace OpenGL
         ///     GL_SHADING_LANGUAGE_VERSION
         /// </param>
         /// <returns>The requested value.</returns>
-        [NotNull][Pure]
         public static string glGetString(int name)
         {
             var buffer = new IntPtr(_glGetString(name));
@@ -360,7 +357,6 @@ namespace OpenGL
         /// </param>
         /// <param name="index">The index of the string to return.</param>
         /// <returns>The requested value.</returns>
-        [NotNull][Pure]
         public static string glGetStringi(int name, uint index)
         {
             var buffer = new IntPtr(_glGetStringi(name, index));
@@ -860,7 +856,7 @@ namespace OpenGL
         ///     Delete named textures.
         /// </summary>
         /// <param name="textures">Specifies an array of textures to be deleted.</param>
-        public static void glDeleteTextures([CanBeNull] uint[] textures)
+        public static void glDeleteTextures(uint[] textures)
         {
             if (textures is null)
                 return;
@@ -895,8 +891,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="n">Specifies the number of texture names to be generated.</param>
         /// <returns>Generated texture names.</returns>
-        [NotNull]
-        [Pure]
         public static uint[] glGenTextures(int n)
         {
             var textures = new uint[n];
@@ -924,7 +918,6 @@ namespace OpenGL
         ///     Generate a single query object name.
         /// </summary>
         /// <returns>The query object name.</returns>
-        [Pure]
         public static uint glGenQuery()
         {
             uint id;
@@ -944,8 +937,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="n">Specifies the number of query object names to be generated.</param>
         /// <returns>An array of generated query object names.</returns>
-        [NotNull]
-        [Pure]
         public static uint[] glGenQueries(int n)
         {
             var queries = new uint[n];
@@ -1221,7 +1212,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <returns>The request parameter value.</returns>
-        [Pure]
         public static bool glGetBoolean(int paramName)
         {
             bool value;
@@ -1235,7 +1225,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <param name="count">The number of values to get.</param>
         /// <returns>The request parameter value.</returns>
-        [NotNull][Pure]
         public static bool[] glGetBooleanv(int paramName, int count)
         {
             var value = new bool[count];
@@ -1258,7 +1247,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <returns>The request parameter value.</returns>
-        [Pure]
         public static double glGetDouble(int paramName)
         {
             double value;
@@ -1272,7 +1260,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <param name="count">The number of values to get.</param>
         /// <returns>The request parameter value.</returns>
-        [NotNull][Pure]
         public static double[] glGetDoublev(int paramName, int count)
         {
             var value = new double[count];
@@ -1296,7 +1283,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <returns>The request parameter value.</returns>
-        [Pure]
         public static float glGetFloat(int paramName)
         {
             float value;
@@ -1310,7 +1296,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <param name="count">The number of values to get.</param>
         /// <returns>The request parameter value.</returns>
-        [NotNull][Pure]
         public static float[] glGetFloatv(int paramName, int count)
         {
             var value = new float[count];
@@ -1333,7 +1318,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <returns>The request parameter value.</returns>
-        [Pure]
         public static int glGetInteger(int paramName)
         {
             int value;
@@ -1347,7 +1331,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <param name="count">The number of values to get.</param>
         /// <returns>The request parameter value.</returns>
-        [NotNull][Pure]
         public static int[] glGetIntegerv(int paramName, int count)
         {
             var value = new int[count];
@@ -1370,7 +1353,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <returns>The request parameter value.</returns>
-        [Pure]
         public static long glGetInteger64(int paramName)
         {
             long value;
@@ -1384,7 +1366,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the parameter value to be returned.</param>
         /// <param name="count">The number of values to get.</param>
         /// <returns>The request parameter value.</returns>
-        [NotNull][Pure]
         public static long[] glGetInteger64v(int paramName, int count)
         {
             var value = new long[count];
@@ -1402,7 +1383,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the symbolic name of a texture parameter.</param>
         /// <param name="count">The number of values to get.</param>
         /// <remarks>Array must have enough space allocated to contain the requested value(s).</remarks>
-        [NotNull][Pure]
         public static float[] glGetTexParameterfv(int target, int paramName, int count)
         {
             var args = new float[count];
@@ -1420,7 +1400,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the symbolic name of a texture parameter.</param>
         /// <param name="count">The number of values to get.</param>
         /// <remarks>Array must have enough space allocated to contain the requested value(s).</remarks>
-        [NotNull][Pure]
         public static int[] glGetTexParameteriv(int target, int paramName, int count)
         {
             var args = new int[count];
@@ -1484,7 +1463,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the symbolic name of a texture parameter.</param>
         /// <param name="count">The number of values to get.</param>
         /// <remarks>Array must have enough space allocated to contain the requested value(s).</remarks>
-        [NotNull][Pure]
         public static float[] glGetTexLevelParameterfv(int target, int level, int paramName, int count)
         {
             var args = new float[count];
@@ -1506,7 +1484,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the symbolic name of a texture parameter.</param>
         /// <param name="count">The number of values to get.</param>
         /// <remarks>Array must have enough space allocated to contain the requested value(s).</remarks>
-        [NotNull][Pure]
         public static int[] glGetTexLevelParameteriv(int target, int level, int paramName, int count)
         {
             var args = new int[count];
@@ -1856,7 +1833,7 @@ namespace OpenGL
         ///     <para>The symbolic constant must be GL_READ_ONLY, GL_WRITE_ONLY, or GL_READ_WRITE.</para>
         /// </param>
         /// <returns>A pointer to the beginning of the mapped range.</returns>
-        public static IntPtr glMapBuffer(int target, int access) => new IntPtr(_glMapBuffer(target, access));
+        public static IntPtr glMapBuffer(int target, int access) => new(_glMapBuffer(target, access));
 
         /// <summary>
         ///     Release the mapping of a buffer object's data store into the client's address space.
@@ -2085,7 +2062,7 @@ namespace OpenGL
         ///     Delete named framebuffer objects.
         /// </summary>
         /// <param name="buffers">Specifies an array of framebuffer objects to be deleted.</param>
-        public static void glDeleteFramebuffers([CanBeNull] uint[] buffers)
+        public static void glDeleteFramebuffers( uint[] buffers)
         {
             if (buffers is null)
                 return;
@@ -2143,7 +2120,7 @@ namespace OpenGL
         ///     Delete named renderbuffer objects.
         /// </summary>
         /// <param name="buffers">Specifies an array of renderbuffer objects to be deleted.</param>
-        public static void glDeleteRenderbuffers([CanBeNull] uint[] buffers)
+        public static void glDeleteRenderbuffers(uint[] buffers)
         {
             if (buffers is null)
                 return;
@@ -2164,7 +2141,7 @@ namespace OpenGL
         ///     Delete named buffer objects.
         /// </summary>
         /// <param name="buffers">Specifies an array of buffer objects to be deleted.</param>
-        public static void glDeleteBuffers([CanBeNull] uint[] buffers)
+        public static void glDeleteBuffers(uint[] buffers)
         {
             if (buffers is null)
                 return;
@@ -2185,7 +2162,6 @@ namespace OpenGL
         ///     Generate a single framebuffer object name.
         /// </summary>
         /// <returns>The framebuffer object name.</returns>
-        [Pure]
         public static uint glGenFramebuffer()
         {
             uint id;
@@ -2198,7 +2174,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="n">Specifies the number of framebuffer object names to be generated.</param>
         /// <returns>An array of generated framebuffer object names.</returns>
-        [Pure][NotNull]
         public static uint[] glGenFramebuffers(int n)
         {
             var buffers = new uint[n];
@@ -2220,7 +2195,6 @@ namespace OpenGL
         ///     Generate a single renderbuffer object name.
         /// </summary>
         /// <returns>The renderbuffer object name.</returns>
-        [Pure]
         public static uint glGenRenderbuffer()
         {
             uint id;
@@ -2233,7 +2207,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="n">Specifies the number of renderbuffer object names to be generated.</param>
         /// <returns>An array of generated renderbuffer object names.</returns>
-        [Pure][NotNull]
         public static uint[] glGenRenderbuffers(int n)
         {
             var buffers = new uint[n];
@@ -2255,7 +2228,6 @@ namespace OpenGL
         ///     Generate a single buffer object name.
         /// </summary>
         /// <returns>The buffer object name.</returns>
-        [Pure]
         public static uint glGenBuffer()
         {
             uint id;
@@ -2268,7 +2240,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="n">Specifies the number of buffer object names to be generated.</param>
         /// <returns>An array of generated buffer object names.</returns>
-        [Pure][NotNull]
         public static uint[] glGenBuffers(int n)
         {
             var buffers = new uint[n];
@@ -2312,7 +2283,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="count">Specifies the number of sampler object names to generate.</param>
         /// <returns>An array containing the generated sampler object names.</returns>
-        [NotNull]
         public static uint[] glGenSamplers(int count)
         {
             var samplers = new uint[count];
@@ -2709,7 +2679,6 @@ namespace OpenGL
         /// <param name="shader">Specifies the shader object to be queried.</param>
         /// <param name="bufSize">Specifies the size of the character buffer for storing the returned source code string.</param>
         /// <returns>The shader source, or <c>null</c> if an error occured.</returns>
-        [CanBeNull][Pure]
         public static string glGetShaderSource(uint shader, int bufSize = 4096)
         {
             var buffer = Marshal.AllocHGlobal(bufSize);
@@ -2736,7 +2705,6 @@ namespace OpenGL
         /// <param name="program">Specifies the program object whose information log is to be queried.</param>
         /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
         /// <returns>The info log, or <c>null</c> if an error occured.</returns>
-        [CanBeNull][Pure]
         public static string glGetProgramInfoLog(uint program, int bufSize = 1024)
         {
             var buffer = Marshal.AllocHGlobal(bufSize);
@@ -2763,7 +2731,6 @@ namespace OpenGL
         /// <param name="shader">Specifies the shader object whose information log is to be queried.</param>
         /// <param name="bufSize">Specifies the size of the character buffer for storing the returned information log.</param>
         /// <returns>The info log, or <c>null</c> if an error occured.</returns>
-        [CanBeNull][Pure]
         public static string glGetShaderInfoLog(uint shader, int bufSize = 1024)
         {
             var buffer = Marshal.AllocHGlobal(bufSize);
@@ -2945,7 +2912,7 @@ namespace OpenGL
         /// <param name="length">Specifies the length of the range to be mapped.</param>
         /// <param name="access">Specifies a combination of access flags indicating the desired access to the mapped range.</param>
         /// <returns>A pointer to the beginning of the mapped range.</returns>
-        public static IntPtr glMapBufferRange(int target, int offset, int length, uint access) => new IntPtr(_glMapBufferRange(target, new IntPtr(offset), new IntPtr(length), access));
+        public static IntPtr glMapBufferRange(int target, int offset, int length, uint access) => new(_glMapBufferRange(target, new IntPtr(offset), new IntPtr(length), access));
 
         /// <summary>
         ///     Map all or part of a buffer object's data store into the client's address space.
@@ -2955,7 +2922,7 @@ namespace OpenGL
         /// <param name="length">Specifies the length of the range to be mapped.</param>
         /// <param name="access">Specifies a combination of access flags indicating the desired access to the mapped range.</param>
         /// <returns>A pointer to the beginning of the mapped range.</returns>
-        public static IntPtr glMapBufferRange(int target, long offset, long length, uint access) => new IntPtr(_glMapBufferRange(target, new IntPtr(offset), new IntPtr(length), access));
+        public static IntPtr glMapBufferRange(int target, long offset, long length, uint access) => new(_glMapBufferRange(target, new IntPtr(offset), new IntPtr(length), access));
         
         /// <summary>
         ///     Indicate modifications to a range of a mapped buffer.
@@ -3235,7 +3202,6 @@ namespace OpenGL
         /// <param name="program">The name of the program containing varying out variable whose binding to query.</param>
         /// <param name="name">The name of the user-defined varying out variable whose binding to query.</param>
         /// <returns>The requested location, or <c>-1</c> if error occured.</returns>
-        [Pure]
         public static int glGetFragDataLocation(uint program, [NotNull] string name)
         {
             var utf8 = Encoding.UTF8.GetBytes(name);
@@ -3275,7 +3241,6 @@ namespace OpenGL
         /// <param name="program">Specifies the program object to be queried.</param>
         /// <param name="maxCount">Specifies the size of the array for storing the returned object names.</param>
         /// <returns>An array containing the attached shaders of the specified program.</returns>
-        [NotNull][Pure]
         public static uint[] glGetAttachedShaders(uint program, int maxCount)
         {
             int count;
@@ -3428,7 +3393,6 @@ namespace OpenGL
         /// <param name="index">Specifies the index of the particular element being queried.</param>
         /// <param name="count">The number of values to get.</param>
         /// <returns>The request parameter value.</returns>
-        [NotNull]
         public static bool[] glGetBooleani_v(int target, uint index, int count)
         {
             var value = new bool[count];
@@ -3446,7 +3410,6 @@ namespace OpenGL
         /// <param name="index">Specifies the index of the particular element being queried.</param>
         /// <param name="count">The number of values to get.</param>
         /// <returns>The request parameter value.</returns>
-        [NotNull]
         public static int[] glGetIntegeri_v(int target, uint index, int count)
         {
             var value = new int[count];
@@ -3464,7 +3427,6 @@ namespace OpenGL
         /// <param name="index">Specifies the index of the particular element being queried.</param>
         /// <param name="count">The number of values to get.</param>
         /// <returns>The request parameter value.</returns>
-        [NotNull]
         public static long[] glGetInteger64i_v(int target, uint index, int count)
         {
             var value = new long[count];
@@ -3494,8 +3456,6 @@ namespace OpenGL
         /// </summary>
         /// <param name="n">Specifies the number of vertex array object names to generate.</param>
         /// <returns>An array of generated vertex array object names.</returns>
-        [NotNull]
-        [Pure]
         public static uint[] glGenVertexArrays(int n)
         {
             var arrays = new uint[n];
@@ -3511,7 +3471,6 @@ namespace OpenGL
         ///     Generates a single vertex array object name.
         /// </summary>
         /// <returns>A generated vertex array name.</returns>
-        [Pure]
         public static uint glGenVertexArray()
         {
             uint array;
@@ -3536,7 +3495,7 @@ namespace OpenGL
         ///     Delete vertex array objects.
         /// </summary>
         /// <param name="arrays">An array of vertex array objects to delete.</param>
-        public static void glDeleteVertexArrays([CanBeNull] uint[] arrays)
+        public static void glDeleteVertexArrays(uint[] arrays)
         {
             if (arrays is null)
                 return;
@@ -5044,7 +5003,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the symbolic name of a sampler parameter.</param>
         /// <param name="count">The number of elements in the sampler parameters.</param>
         /// <returns>An array of the sampler parameter values.</returns>
-        [NotNull][Pure]
         public static int[] glGetSamplerParameteriv(uint sampler, int paramName, int count)
         {
             var values = new int[count];
@@ -5064,7 +5022,6 @@ namespace OpenGL
         /// <param name="count">The number of elements in the sampler parameters.</param>
         /// <returns>An array of the sampler parameter values.</returns>
         /// <remarks>Values are interpreted as fully signed or unsigned.</remarks>
-        [NotNull][Pure]
         public static int[] glGetSamplerParameterIiv(uint sampler, int paramName, int count)
         {
             var values = new int[count];
@@ -5083,7 +5040,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the symbolic name of a sampler parameter.</param>
         /// <param name="count">The number of elements in the sampler parameters.</param>
         /// <returns>An array of the sampler parameter values.</returns>
-        [NotNull][Pure]
         public static float[] glGetSamplerParameterfv(uint sampler, int paramName, int count)
         {
             var values = new float[count];
@@ -5103,7 +5059,6 @@ namespace OpenGL
         /// <param name="count">The number of elements in the sampler parameters.</param>
         /// <returns>An array of the sampler parameter values.</returns>
         /// <remarks>Values are interpreted as fully signed or unsigned.</remarks>
-        [NotNull][Pure]
         public static uint[] GetSamplerParameterIuiv(uint sampler, int paramName, int count)
         {
             var values = new uint[count];
@@ -5121,7 +5076,6 @@ namespace OpenGL
         /// <param name="sampler">Specifies name of the sampler object from which to retrieve parameters.</param>
         /// <param name="paramName">Specifies the symbolic name of a sampler parameter.</param>
         /// <returns>An single sampler parameter values.</returns>
-        [Pure]
         public static int glGetSamplerParameteriv(uint sampler, int paramName)
         {
             int value;
@@ -5136,7 +5090,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the symbolic name of a sampler parameter.</param>
         /// <returns>An single sampler parameter values.</returns>
         /// <remarks>Values are interpreted as fully signed or unsigned.</remarks>
-        [Pure]
         public static int glGetSamplerParameterIiv(uint sampler, int paramName)
         {
             int value;
@@ -5150,7 +5103,6 @@ namespace OpenGL
         /// <param name="sampler">Specifies name of the sampler object from which to retrieve parameters.</param>
         /// <param name="paramName">Specifies the symbolic name of a sampler parameter.</param>
         /// <returns>An single sampler parameter values.</returns>
-        [Pure]
         public static float glGetSamplerParameterfv(uint sampler, int paramName)
         {
             float value;
@@ -5165,7 +5117,6 @@ namespace OpenGL
         /// <param name="paramName">Specifies the symbolic name of a sampler parameter.</param>
         /// <returns>An single sampler parameter values.</returns>
         /// <remarks>Values are interpreted as fully signed or unsigned.</remarks>
-        [Pure]
         public static uint GetSamplerParameterIui(uint sampler, int paramName)
         {
             uint value;
@@ -5865,7 +5816,6 @@ namespace OpenGL
         /// <param name="uniformBlockIndex">Specifies the index of the uniform block within program.</param>
         /// <param name="pname">Specifies the name of the parameter to query.</param>
         /// <param name="count">Specifies the number of values to receive.</param>
-        [NotNull][Pure]
         public static int[] glGetActiveUniformBlockiv(uint program, uint uniformBlockIndex, int pname, int count)
         {
             var values = new int[count];
@@ -5883,7 +5833,6 @@ namespace OpenGL
         /// <param name="uniformBlockIndex">Specifies the index of the uniform block within program.</param>
         /// <param name="bufSize">Specifies the size of the buffer addressed by uniformBlockName.</param>
         /// <returns>The name of the uniform block.</returns>
-        [NotNull][Pure]
         public static string glGetActiveUniformBlockName(uint program, uint uniformBlockIndex, int bufSize = 512)
         {
             int length;
@@ -5951,7 +5900,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of a query object parameter.<para>Accepted values are GL_QUERY_RESULT or GL_QUERY_RESULT_AVAILABLE.</para></param>
         /// <param name="count">The number of values to receive.</param>
         /// <returns>The retrieved values.</returns>
-        [NotNull][Pure]
         public static ulong[] glGetQueryObjectui64v(uint id, int pname, int count)
         {
             var values = new ulong[count];
@@ -5969,7 +5917,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of a query object parameter.<para>Accepted values are GL_QUERY_RESULT or GL_QUERY_RESULT_AVAILABLE.</para></param>
         /// <param name="count">The number of values to receive.</param>
         /// <returns>The retrieved values.</returns>
-        [NotNull][Pure]
         public static long[] glGetQueryObjecti64v(uint id, int pname, int count)
         {
             var values = new long[count];
@@ -5987,7 +5934,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of a query object parameter.<para>Accepted values are GL_QUERY_RESULT or GL_QUERY_RESULT_AVAILABLE.</para></param>
         /// <param name="count">The number of values to receive.</param>
         /// <returns>The retrieved values.</returns>
-        [NotNull][Pure]
         public static uint[] glGetQueryObjectuiv(uint id, int pname, int count)
         {
             var values = new uint[count];
@@ -6005,7 +5951,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of a query object parameter.<para>Accepted values are GL_QUERY_RESULT or GL_QUERY_RESULT_AVAILABLE.</para></param>
         /// <param name="count">The number of values to receive.</param>
         /// <returns>The retrieved values.</returns>
-        [NotNull][Pure]
         public static int[] glGetQueryObjectiv(uint id, int pname, int count)
         {
             var values = new int[count];
@@ -6023,7 +5968,6 @@ namespace OpenGL
         /// <param name="uniformIndex">Specifies the index of the active uniform whose name to query.</param>
         /// <param name="bufSize">Specifies the size of the buffer for the string.</param>
         /// <returns>The name of the active uniform.</returns>
-        [NotNull][Pure]
         public static string glGetActiveUniformName(uint program, uint uniformIndex, int bufSize = 512)
         {
             int length;
@@ -6065,7 +6009,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the object parameter.</param>
         /// <param name="count">The number of parameters to return..</param>
         /// <returns>The requested parameters.</returns>
-        [NotNull][Pure]
         public static int[] glGetProgramiv(uint program, int pname, int count)
         {
             var values = new int[count];
@@ -6091,7 +6034,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the object parameter.<para>Must be GL_SHADER_TYPE, GL_DELETE_STATUS, GL_COMPILE_STATUS, GL_INFO_LOG_LENGTH, or GL_SHADER_SOURCE_LENGTH.</para></param>
         /// <param name="count">The number of parameters to return..</param>
         /// <returns>The requested parameters.</returns>
-        [NotNull][Pure]
         public static int[] glGetShaderiv(uint shader, int pname, int count)
         {
             var values = new int[count];
@@ -6117,7 +6059,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of a query object target parameter.<para>Accepted values are GL_CURRENT_QUERY or GL_QUERY_COUNTER_BITS.</para></param>
         /// <param name="count">The number of parameters to return..</param>
         /// <returns>The requested parameters.</returns>
-        [NotNull][Pure]
         public static int[] glGetQueryiv(int target, int pname, int count)
         {
             var values = new int[count];
@@ -6143,7 +6084,6 @@ namespace OpenGL
         /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The requested values.</returns>
-        [NotNull][Pure]
         public static float[] glGetUniformfv(uint program, int location, int count)
         {
             var values = new float[count];
@@ -6169,7 +6109,6 @@ namespace OpenGL
         /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The requested values.</returns>
-        [NotNull][Pure]
         public static uint[] glGetUniformuiv(uint program, int location, int count)
         {
             var values = new uint[count];
@@ -6195,7 +6134,6 @@ namespace OpenGL
         /// <param name="location">Specifies the location of the uniform variable to be queried.</param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The requested values.</returns>
-        [NotNull][Pure]
         public static int[] glGetUniformiv(uint program, int location, int count)
         {
             var values = new int[count];
@@ -6273,7 +6211,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of the vertex attribute parameter to be queried. </param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The requested values.</returns>
-        [NotNull][Pure]
         public static double[] glGetVertexAttribdv(uint index, int pname, int count)
         {
             var values = new double[count];
@@ -6291,7 +6228,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of the vertex attribute parameter to be queried. </param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The requested values.</returns>
-        [NotNull][Pure]
         public static float[] glGetVertexAttribfv(uint index, int pname, int count)
         {
             var values = new float[count];
@@ -6309,7 +6245,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of the vertex attribute parameter to be queried. </param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The requested values.</returns>
-        [NotNull][Pure]
         public static int[] glGetVertexAttribiv(uint index, int pname, int count)
         {
             var values = new int[count];
@@ -6327,7 +6262,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of the vertex attribute parameter to be queried. </param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The requested values.</returns>
-        [NotNull][Pure]
         public static int[] glGetVertexAttribIiv(uint index, int pname, int count)
         {
             var values = new int[count];
@@ -6345,7 +6279,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of the vertex attribute parameter to be queried. </param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The requested values.</returns>
-        [NotNull][Pure]
         public static uint[] glGetVertexAttribIuiv(uint index, int pname, int count)
         {
             var values = new uint[count];
@@ -6726,7 +6659,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The texture parameters.</returns>
-        [NotNull][Pure]
         public static int[] glGetTexParameterIiv(int target, int pname, int count)
         {
             var values = new int[count];
@@ -6744,7 +6676,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of a texture parameter.</param>
         /// <param name="count">The number of values to retrieve.</param>
         /// <returns>The texture parameters.</returns>
-        [NotNull][Pure]
         public static uint[] glGetTexParameterIuiv(int target, int pname, int count)
         {
             var values = new uint[count];
@@ -6761,7 +6692,6 @@ namespace OpenGL
         /// <param name="program">Specifies the name of a program containing the uniform block.</param>
         /// <param name="uniformBlockName">The name of the uniform block whose index to retrieve.</param>
         /// <returns>The index of a uniform block within program.</returns>
-        [Pure]
         public static uint glGetUniformBlockIndex(uint program, [NotNull] string uniformBlockName)
         {
             var buffer = Encoding.UTF8.GetBytes(uniformBlockName);
@@ -6816,7 +6746,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of a buffer object parameter.<para>Must be GL_BUFFER_SIZE or GL_BUFFER_USAGE.</para></param>
         /// <param name="count">The number of values to return.</param>
         /// <returns>The requested parameter.</returns>
-        [NotNull][Pure]
         public static int[] glGetBufferParameteriv(int target, int pname, int count)
         {
             var values = new int[count];
@@ -6845,7 +6774,6 @@ namespace OpenGL
         /// <param name="count">The number of properties to retrieve.</param>
         /// <param name="length">Specifies the number of integers placed in the return value.</param>
         /// <returns>The specified properties.</returns>
-        [NotNull][Pure]
         public static int[] glGetSynciv(IntPtr sync, int pname, int count, out int length)
         {
             var bufSize = count * sizeof(int);
@@ -6896,7 +6824,6 @@ namespace OpenGL
         /// <param name="index">Specifies the index of the sample whose position to query.</param>
         /// <param name="count">The number of values to recieve.</param>
         /// <returns>The position of the sample.</returns>
-        [NotNull][Pure]
         public static float[] glGetMultisamplefv(int pname, uint index, int count)
         {
             var values = new float[count];
@@ -7175,7 +7102,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the symbolic name of a buffer object parameter.</param>
         /// <param name="count">The number of parameters to retrieve.</param>
         /// <returns>The requested parameters.</returns>
-        [NotNull][Pure]
         public static long[] glGetBufferParameteri64v(int target, int pname, int count)
         {
             var values = new long[count];
@@ -7220,7 +7146,6 @@ namespace OpenGL
         /// <param name="pname">Specifies the parameter of attachment to query.</param>
         /// <param name="count">The number of parameters to retrieve.</param>
         /// <returns>Returns the value of parameter pname for attachment.</returns>
-        [NotNull][Pure]
         public static int[] glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, int count)
         {
             var values = new int[count];

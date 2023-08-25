@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
-using JetBrains.Annotations;
 
 #pragma warning disable 0419
 
@@ -15,8 +15,6 @@ namespace GLFW
     [SuppressUnmanagedCodeSecurity]
     public static class Glfw
     {
-        #region Fields and Constants
-
         /// <summary>
         ///     The native library name,
         ///     <para>For Unix users using an installed version of GLFW, this needs refactored to <c>glfw</c>.</para>
@@ -31,17 +29,11 @@ namespace GLFW
 
         private static readonly ErrorCallback errorCallback = GlfwError;
 
-        #endregion
-
-        #region Constructors
-
         static Glfw()
         {
             Init();
             SetErrorCallback(errorCallback);
         }
-
-        #endregion
 
         /// <summary>
         ///     Returns and clears the error code of the last error that occurred on the calling thread, and optionally
@@ -53,7 +45,7 @@ namespace GLFW
         /// </summary>
         /// <param name="description">The description string, or <c>null</c> if there is no error.</param>
         /// <returns>The error code.</returns>
-        public static ErrorCode GetError(out string description)
+        public static ErrorCode GetError(out string? description)
         {
             var code = GetErrorPrivate(out var ptr);
             description = code == ErrorCode.None ? null : Util.PtrToStringUTF8(ptr);
@@ -282,7 +274,7 @@ namespace GLFW
         /// </summary>
         /// <param name="joystickId">The joystick to query.</param>
         /// <returns>The GUID of the joystick, or <c>null</c> if the joystick is not present or an error occurred.</returns>
-        public static string GetJoystickGuid(int joystickId)
+        public static string? GetJoystickGuid(int joystickId)
         {
             var ptr = GetJoystickGuidPrivate(joystickId);
             return ptr == IntPtr.Zero ? null : Util.PtrToStringUTF8(ptr);
@@ -341,7 +333,7 @@ namespace GLFW
         ///     The name of the gamepad, or <c>null</c> if the joystick is not present, does not have a mapping or an error
         ///     occurred.
         /// </returns>
-        public static string GetGamepadName(int gamepadId)
+        public static string? GetGamepadName(int gamepadId)
         {
             var ptr = GetGamepadNamePrivate(gamepadId);
             return ptr == IntPtr.Zero ? null : Util.PtrToStringUTF8(ptr);
@@ -358,8 +350,6 @@ namespace GLFW
         /// </returns>
         [DllImport(LIBRARY, EntryPoint = "glfwGetGamepadState", CallingConvention = CallingConvention.Cdecl)]
         public static extern bool GetGamepadState(int id, out GamePadState state);
-
-        #region Properties
 
         /// <summary>
         ///     Gets the window whose OpenGL or OpenGL ES context is current on the calling thread, or <see cref="Window.None" />
@@ -457,10 +447,6 @@ namespace GLFW
         ///     The version string.
         /// </value>
         public static string VersionString => Util.PtrToStringUTF8(GetVersionString());
-
-        #endregion
-
-        #region External
 
         /// <summary>
         ///     This function sets hints for the next initialization of GLFW.
@@ -1469,10 +1455,6 @@ namespace GLFW
         [DllImport(LIBRARY, EntryPoint = "glfwGetError", CallingConvention = CallingConvention.Cdecl)]
         private static extern ErrorCode GetErrorPrivate(out IntPtr description);
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         ///     This function creates a window and its associated OpenGL or OpenGL ES context. Most of the options controlling how
         ///     the window and its context should be created are specified with window hints.
@@ -1507,7 +1489,6 @@ namespace GLFW
         /// </summary>
         /// <param name="window">A window instance.</param>
         /// <returns>The contents of the clipboard as a UTF-8 encoded string, or <c>null</c> if an error occurred.</returns>
-        [NotNull]
         public static string GetClipboardString(Window window)
         {
             return Util.PtrToStringUTF8(GetClipboardStringInternal(window));
@@ -1862,7 +1843,5 @@ namespace GLFW
         {
             throw new Exception(Util.PtrToStringUTF8(message));
         }
-
-        #endregion
     }
 }
