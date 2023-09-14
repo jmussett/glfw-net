@@ -62,12 +62,12 @@ namespace HelloTriangle
         private static void PrepareContext()
         {
             // Set some common hints for the OpenGL profile creation
-            Glfw.WindowHint(Hint.ClientApi, ClientApi.OpenGL);
-            Glfw.WindowHint(Hint.ContextVersionMajor, 3);
-            Glfw.WindowHint(Hint.ContextVersionMinor, 3);
-            Glfw.WindowHint(Hint.OpenglProfile, Profile.Core);
-            Glfw.WindowHint(Hint.Doublebuffer, true);
-            Glfw.WindowHint(Hint.Decorated, true);
+            Glfw.WindowHint(GlfwHint.ClientApi, ClientApi.OpenGL);
+            Glfw.WindowHint(GlfwHint.ContextVersionMajor, 3);
+            Glfw.WindowHint(GlfwHint.ContextVersionMinor, 3);
+            Glfw.WindowHint(GlfwHint.OpenglProfile, Profile.Core);
+            Glfw.WindowHint(GlfwHint.Doublebuffer, true);
+            Glfw.WindowHint(GlfwHint.Decorated, true);
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace HelloTriangle
         /// <param name="width">The width of the client area, in pixels.</param>
         /// <param name="height">The height of the client area, in pixels.</param>
         /// <returns>A handle to the created window.</returns>
-        private static Window CreateWindow(int width, int height)
+        private static GlfwWindow CreateWindow(int width, int height)
         {
             // Create window, make the OpenGL context current on the thread, and import graphics functions
-            var window = Glfw.CreateWindow(width, height, TITLE, Monitor.None, Window.None);
+            var window = Glfw.CreateWindow(width, height, TITLE, GlfwMonitor.None, GlfwWindow.None);
             Glfw.MakeContextCurrent(window);
             Import(Glfw.GetProcAddress);
             

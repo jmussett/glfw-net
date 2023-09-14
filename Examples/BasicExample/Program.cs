@@ -24,13 +24,13 @@ namespace BasicExample
         static void Main(string[] args)
         {
             // Set some common hints for the OpenGL profile creation
-            Glfw.WindowHint(Hint.ClientApi, ClientApi.OpenGL);
-            Glfw.WindowHint(Hint.ContextVersionMajor, 3);
-            Glfw.WindowHint(Hint.ContextVersionMinor, 3);
-            Glfw.WindowHint(Hint.OpenglProfile, Profile.Core);
-            Glfw.WindowHint(Hint.Doublebuffer, true);
-            Glfw.WindowHint(Hint.Decorated, true);
-            Glfw.WindowHint(Hint.OpenglForwardCompatible, true);
+            Glfw.WindowHint(GlfwHint.ClientApi, ClientApi.OpenGL);
+            Glfw.WindowHint(GlfwHint.ContextVersionMajor, 3);
+            Glfw.WindowHint(GlfwHint.ContextVersionMinor, 3);
+            Glfw.WindowHint(GlfwHint.OpenglProfile, Profile.Core);
+            Glfw.WindowHint(GlfwHint.Doublebuffer, true);
+            Glfw.WindowHint(GlfwHint.Decorated, true);
+            Glfw.WindowHint(GlfwHint.OpenglForwardCompatible, true);
 
             rand = new Random();
 
@@ -50,7 +50,7 @@ namespace BasicExample
             #else
 
             // Create window
-            var window = Glfw.CreateWindow(WIDTH, HEIGHT, TITLE, Monitor.None, Window.None);
+            var window = Glfw.CreateWindow(WIDTH, HEIGHT, TITLE, GlfwMonitor.None, GlfwWindow.None);
             Glfw.MakeContextCurrent(window);
 
             // Effectively enables VSYNC by setting to 1.
@@ -112,7 +112,7 @@ namespace BasicExample
         }
 #else
 
-        private static void KeyCallback(Window window, Keys key, int scancode, InputState state, ModifierKeys mods)
+        private static void KeyCallback(GlfwWindow window, Keys key, int scancode, InputState state, ModifierKeys mods)
         {
             switch (key)
             {

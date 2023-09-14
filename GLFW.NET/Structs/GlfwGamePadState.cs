@@ -6,7 +6,7 @@ namespace GLFW;
 ///     Represents the state of a gamepad.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct GamePadState
+public readonly struct GlfwGamePadState
 {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 15)]
     private readonly InputState[] states;

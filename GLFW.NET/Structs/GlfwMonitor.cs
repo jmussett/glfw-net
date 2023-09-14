@@ -7,28 +7,28 @@ namespace GLFW;
 /// <summary>
 ///     Wrapper around a pointer to monitor.
 /// </summary>
-/// <seealso cref="Monitor" />
+/// <seealso cref="GlfwMonitor" />
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct Monitor : IEquatable<Monitor>
+public readonly struct GlfwMonitor : IEquatable<GlfwMonitor>
 {
     /// <summary>
-    ///     Represents a <c>null</c> value for a <see cref="Monitor" /> object.
+    ///     Represents a <c>null</c> value for a <see cref="GlfwMonitor" /> object.
     /// </summary>
-    public static readonly Monitor None;
+    public static readonly GlfwMonitor None;
 
     /// <summary>
     ///     Internal pointer.
     /// </summary>
-    private readonly IntPtr handle;
+    private readonly nint handle;
 
     /// <summary>
-    ///     Determines whether the specified <see cref="Monitor" />, is equal to this instance.
+    ///     Determines whether the specified <see cref="GlfwMonitor" />, is equal to this instance.
     /// </summary>
-    /// <param name="other">The <see cref="Monitor" /> to compare with this instance.</param>
+    /// <param name="other">The <see cref="GlfwMonitor" /> to compare with this instance.</param>
     /// <returns>
     ///     <c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c>.
     /// </returns>
-    public bool Equals(Monitor other) { return handle.Equals(other.handle); }
+    public bool Equals(GlfwMonitor other) { return handle.Equals(other.handle); }
 
     /// <summary>
     ///     Determines whether the specified <see cref="object" />, is equal to this instance.
@@ -39,7 +39,7 @@ public readonly struct Monitor : IEquatable<Monitor>
     /// </returns>
     public override bool Equals(object? obj)
     {
-        if (obj is Monitor monitor)
+        if (obj is GlfwMonitor monitor)
             return Equals(monitor);
         return false;
     }
@@ -60,7 +60,7 @@ public readonly struct Monitor : IEquatable<Monitor>
     /// <returns>
     ///     The result of the operator.
     /// </returns>
-    public static bool operator ==(Monitor left, Monitor right) { return left.Equals(right); }
+    public static bool operator ==(GlfwMonitor left, GlfwMonitor right) { return left.Equals(right); }
 
     /// <summary>
     ///     Implements the operator !=.
@@ -70,7 +70,7 @@ public readonly struct Monitor : IEquatable<Monitor>
     /// <returns>
     ///     The result of the operator.
     /// </returns>
-    public static bool operator !=(Monitor left, Monitor right) { return !left.Equals(right); }
+    public static bool operator !=(GlfwMonitor left, GlfwMonitor right) { return !left.Equals(right); }
 
     /// <summary>
     ///     Returns a <see cref="string" /> that represents this instance.
@@ -114,7 +114,7 @@ public readonly struct Monitor : IEquatable<Monitor>
     /// </summary>
     /// <seealso cref="Glfw.GetMonitorUserPointer" />
     /// <seealso cref="Glfw.SetMonitorUserPointer" />
-    public IntPtr UserPointer
+    public nint UserPointer
     {
         get => Glfw.GetMonitorUserPointer(handle);
         set => Glfw.SetMonitorUserPointer(handle, value);

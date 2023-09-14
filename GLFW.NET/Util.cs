@@ -12,7 +12,7 @@ internal static class Util
     /// </summary>
     /// <param name="ptr">Pointer to the start of the string.</param>
     /// <returns>Managed string created from read UTF-8 bytes.</returns>
-    public static string PtrToStringUTF8(IntPtr ptr)
+    public static string PtrToStringUTF8(nint ptr)
     {
         if (ptr != IntPtr.Zero)
         {

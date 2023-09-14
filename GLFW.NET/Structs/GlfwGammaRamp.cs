@@ -7,7 +7,7 @@ namespace GLFW;
 ///     Describes the gamma ramp for a monitor.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public struct GammaRamp
+public struct GlfwGammaRamp
 {
     /// <summary>
     ///     An array of value describing the response of the red channel.
@@ -33,13 +33,13 @@ public struct GammaRamp
     public readonly uint Size;
 
     /// <summary>
-    ///     Creates a new instance of a <see cref="GammaRamp" /> using the specified values.
+    ///     Creates a new instance of a <see cref="GlfwGammaRamp" /> using the specified values.
     ///     <para>WARNING: On some platforms (Windows), each value MUST be 256 in length.</para>
     /// </summary>
     /// <param name="red">An array of value describing the response of the red channel.</param>
     /// <param name="green">An array of value describing the response of the green channel.</param>
     /// <param name="blue">An array of value describing the response of the blue channel.</param>
-    public GammaRamp(ushort[] red, ushort[] green, ushort[] blue)
+    public GlfwGammaRamp(ushort[] red, ushort[] green, ushort[] blue)
     {
         if (red.Length == green.Length && green.Length == blue.Length)
         {

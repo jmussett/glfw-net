@@ -85,22 +85,22 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     /// <summary>
     ///     The window instance this object wraps.
     /// </summary>
-    protected readonly Window Window;
+    protected readonly GlfwWindow Window;
 
     private string? title;
 
-    private PositionCallback? windowPositionCallback;
-    private SizeCallback? windowSizeCallback, framebufferSizeCallback;
-    private FocusCallback? windowFocusCallback;
-    private WindowCallback? closeCallback, windowRefreshCallback;
-    private FileDropCallback? dropCallback;
-    private MouseCallback? cursorPositionCallback, scrollCallback;
-    private MouseEnterCallback? cursorEnterCallback;
-    private MouseButtonCallback? mouseButtonCallback;
-    private CharModsCallback? charModsCallback;
-    private KeyCallback? keyCallback;
-    private WindowMaximizedCallback? windowMaximizeCallback;
-    private WindowContentsScaleCallback? windowContentScaleCallback;
+    private GlfwPositionCallback? windowPositionCallback;
+    private GlfwSizeCallback? windowSizeCallback, framebufferSizeCallback;
+    private GlfwFocusCallback? windowFocusCallback;
+    private GlfwWindowCallback? closeCallback, windowRefreshCallback;
+    private GlfwFileDropCallback? dropCallback;
+    private GlfwMouseCallback? cursorPositionCallback, scrollCallback;
+    private GlfwMouseEnterCallback? cursorEnterCallback;
+    private GlfwMouseButtonCallback? mouseButtonCallback;
+    private GlfwCharModsCallback? charModsCallback;
+    private GlfwKeyCallback? keyCallback;
+    private GlfwWindowMaximizedCallback? windowMaximizeCallback;
+    private GlfwWindowContentsScaleCallback? windowContentScaleCallback;
 
     /// <summary>
     ///     Gets or sets the size and location of the window including its non-client elements (borders, title bar, etc.), in
@@ -152,7 +152,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     /// <summary>
     ///     Gets or sets the width of the client area of the window, in screen coordinates.
     /// </summary>
-    /// <exception cref="Exception">Thrown when specified value is less than 1.</exception>
+    /// <exception cref="GlfwException">Thrown when specified value is less than 1.</exception>
     public int ClientWidth
     {
         get
@@ -163,7 +163,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
         set
         {
             if (value < 1) 
-                throw new Exception("Window width muts be greater than 0.");
+                throw new GlfwException("Window width muts be greater than 0.");
             Glfw.GetWindowSize(Window, out var dummy, out var height);
             Glfw.SetWindowSize(Window, value, height);
         }
@@ -172,7 +172,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     /// <summary>
     ///     Gets or sets the height of the client area of the window, in screen coordinates.
     /// </summary>
-    /// <exception cref="Exception">Thrown when specified value is less than 1.</exception>
+    /// <exception cref="GlfwException">Thrown when specified value is less than 1.</exception>
     public int ClientHeight
     {
         get
@@ -183,7 +183,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
         set
         {
             if (value < 1) 
-                throw new Exception("Window height muts be greater than 0.");
+                throw new GlfwException("Window height muts be greater than 0.");
             Glfw.GetWindowSize(Window, out var width, out var dummy);
             Glfw.SetWindowSize(Window, width, value);
         }
@@ -248,7 +248,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     /// <value>
     ///     The GLFW window handle.
     /// </value>
-    public IntPtr Handle => handle;
+    public nint Handle => handle;
 
     /// <summary>
     ///     Gets the Window's HWND for this window.
@@ -258,15 +258,15 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     ///     The HWND pointer.
     /// </value>
     // ReSharper disable once IdentifierTypo
-    public IntPtr Hwnd
+    public nint Hwnd
     {
         get
         {
             try
             {
-                return Native.GetWin32Window(Window);
+                return Glfw.Native.GetWin32Window(Window);
             }
-            catch (Exception)
+            catch (GlfwException)
             {
                 return IntPtr.Zero;
             }
@@ -353,12 +353,12 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
 
     /// <summary>
     ///     Gets the monitor this window is fullscreen on.
-    ///     <para>Returns <see cref="GLFW.Monitor.None" /> if window is not fullscreen.</para>
+    ///     <para>Returns <see cref="GLFW.GlfwMonitor.None" /> if window is not fullscreen.</para>
     /// </summary>
     /// <value>
     ///     The monitor.
     /// </value>
-    public Monitor Monitor => Glfw.GetWindowMonitor(Window);
+    public GlfwMonitor Monitor => Glfw.GetWindowMonitor(Window);
 
     /// <summary>
     ///     Gets or sets the mouse position in screen-coordinates relative to the client area of the window.
@@ -474,7 +474,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     /// <value>
     ///     The user-defined pointer.
     /// </value>
-    public IntPtr UserPointer
+    public nint UserPointer
     {
         get => Glfw.GetWindowUserPointer(Window);
         set => Glfw.SetWindowUserPointer(Window, value);
@@ -482,17 +482,17 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
 
     /// <summary>
     ///     Gets the video mode for the monitor this window is fullscreen on.
-    ///     <para>If window is not fullscreen, returns the <see cref="GLFW.VideoMode" /> for the primary monitor.</para>
+    ///     <para>If window is not fullscreen, returns the <see cref="GLFW.GlfwVideoMode" /> for the primary monitor.</para>
     /// </summary>
     /// <value>
     ///     The video mode.
     /// </value>
-    public VideoMode VideoMode
+    public GlfwVideoMode VideoMode
     {
         get
         {
             var monitor = Monitor;
-            return Glfw.GetVideoMode(monitor == Monitor.None ? Glfw.PrimaryMonitor : monitor);
+            return Glfw.GetVideoMode(monitor == GlfwMonitor.None ? Glfw.PrimaryMonitor : monitor);
         }
     }
 
@@ -515,25 +515,25 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     }
 
     /// <summary>
-    ///     Performs an implicit conversion from <see cref="NativeWindow" /> to <see cref="GLFW.Window" />.
+    ///     Performs an implicit conversion from <see cref="NativeWindow" /> to <see cref="GLFW.GlfwWindow" />.
     /// </summary>
     /// <param name="nativeWindow">The game window.</param>
     /// <returns>
     ///     The result of the conversion.
     /// </returns>
-    public static implicit operator Window(NativeWindow nativeWindow)
+    public static implicit operator GlfwWindow(NativeWindow nativeWindow)
     {
         return nativeWindow.Window;
     }
 
     /// <summary>
-    ///     Performs an implicit conversion from <see cref="NativeWindow" /> to <see cref="IntPtr" />.
+    ///     Performs an implicit conversion from <see cref="NativeWindow" /> to <see cref="nint" />.
     /// </summary>
     /// <param name="nativeWindow">The game window.</param>
     /// <returns>
     ///     The result of the conversion.
     /// </returns>
-    public static implicit operator IntPtr(NativeWindow nativeWindow)
+    public static implicit operator nint(NativeWindow nativeWindow)
     {
         return nativeWindow.Window;
     }
@@ -541,7 +541,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     /// <summary>
     ///     Initializes a new instance of the <see cref="NativeWindow" /> class.
     /// </summary>
-    public NativeWindow() : this(800, 600, string.Empty, Monitor.None, Window.None)
+    public NativeWindow() : this(800, 600, string.Empty, GlfwMonitor.None, GlfwWindow.None)
     {
     }
 
@@ -551,8 +551,8 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     /// <param name="width">The desired width, in screen coordinates, of the window. This must be greater than zero.</param>
     /// <param name="height">The desired height, in screen coordinates, of the window. This must be greater than zero.</param>
     /// <param name="title">The initial window title.</param>
-    public NativeWindow(int width, int height, string? title) : this(width, height, title, Monitor.None,
-        Window.None)
+    public NativeWindow(int width, int height, string? title) : this(width, height, title, GlfwMonitor.None,
+        GlfwWindow.None)
     {
     }
 
@@ -562,12 +562,12 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     /// <param name="width">The desired width, in screen coordinates, of the window. This must be greater than zero.</param>
     /// <param name="height">The desired height, in screen coordinates, of the window. This must be greater than zero.</param>
     /// <param name="title">The initial window title.</param>
-    /// <param name="monitor">The monitor to use for full screen mode, or <see cref="GLFW.Monitor.None" /> for windowed mode.</param>
+    /// <param name="monitor">The monitor to use for full screen mode, or <see cref="GLFW.GlfwMonitor.None" /> for windowed mode.</param>
     /// <param name="share">
-    ///     A window instance whose context to share resources with, or <see cref="GLFW.Window.None" /> to not share
+    ///     A window instance whose context to share resources with, or <see cref="GLFW.GlfwWindow.None" /> to not share
     ///     resources..
     /// </param>
-    public NativeWindow(int width, int height, string? title, Monitor monitor, Window share) : base(true)
+    public NativeWindow(int width, int height, string? title, GlfwMonitor monitor, GlfwWindow share) : base(true)
     {
         this.title = title ?? string.Empty;
         Window = Glfw.CreateWindow(width, height, title ?? string.Empty, monitor, share);
@@ -585,7 +585,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     {
         if (Maximized)
             return;
-        var monitor = Monitor == Monitor.None ? Glfw.PrimaryMonitor : Monitor;
+        var monitor = Monitor == GlfwMonitor.None ? Glfw.PrimaryMonitor : Monitor;
         var videoMode = Glfw.GetVideoMode(monitor);
         var size = Size;
         Position = new Point((videoMode.Width - size.Width) / 2, (videoMode.Height - size.Height) / 2);
@@ -622,7 +622,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     ///     Sets the window fullscreen on the specified monitor.
     /// </summary>
     /// <param name="monitor">The monitor to display the window fullscreen.</param>
-    public void Fullscreen(Monitor monitor)
+    public void Fullscreen(GlfwMonitor monitor)
     {
         Glfw.SetWindowMonitor(Window, monitor, 0, 0, 0, 0, -1);
     }
@@ -678,7 +678,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     ///     <para>Standard sizes are 16x16, 32x32, and 48x48.</para>
     /// </summary>
     /// <param name="images">One or more images to set as an icon.</param>
-    public void SetIcons([NotNull] params Image[] images)
+    public void SetIcons([NotNull] params GlfwImage[] images)
     {
         Glfw.SetWindowIcon(Window, images.Length, images);
     }
@@ -686,17 +686,17 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
     /// <summary>
     ///     Sets the window monitor.
     ///     <para>
-    ///         If <paramref name="monitor" /> is not <see cref="GLFW.Monitor.None" />, the window will be full-screened and
+    ///         If <paramref name="monitor" /> is not <see cref="GLFW.GlfwMonitor.None" />, the window will be full-screened and
     ///         dimensions ignored.
     ///     </para>
     /// </summary>
-    /// <param name="monitor">The desired monitor, or <see cref="GLFW.Monitor.None" /> to set windowed mode.</param>
+    /// <param name="monitor">The desired monitor, or <see cref="GLFW.GlfwMonitor.None" /> to set windowed mode.</param>
     /// <param name="x">The desired x-coordinate of the upper-left corner of the client area.</param>
     /// <param name="y">The desired y-coordinate of the upper-left corner of the client area.</param>
     /// <param name="width">The desired width, in screen coordinates, of the client area or video mode.</param>
     /// <param name="height">The desired height, in screen coordinates, of the client area or video mode.</param>
     /// <param name="refreshRate">The desired refresh rate, in Hz, of the video mode, or <see cref="Constants.Default" />.</param>
-    public void SetMonitor(Monitor monitor, int x, int y, int width, int height,
+    public void SetMonitor(GlfwMonitor monitor, int x, int y, int width, int height,
         int refreshRate = (int) Constants.Default)
     {
         Glfw.SetWindowMonitor(Window, monitor, x, y, width, height, refreshRate);
@@ -759,7 +759,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
             Glfw.DestroyWindow(Window);
             return true;
         }
-        catch (Exception)
+        catch (GlfwException)
         {
             return false;
         }
@@ -800,7 +800,7 @@ public class NativeWindow : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<Native
         Glfw.SetWindowContentScaleCallback(Window, windowContentScaleCallback);
     }
 
-    private void OnFileDrop(int count, IntPtr pointer)
+    private void OnFileDrop(int count, nint pointer)
     {
         var paths = new string[count];
         var offset = 0;

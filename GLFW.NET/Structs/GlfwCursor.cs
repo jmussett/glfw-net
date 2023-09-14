@@ -6,28 +6,28 @@ namespace GLFW;
 /// <summary>
 ///     Wrapper around a handle for a window cursor object.
 /// </summary>
-/// <seealso cref="Cursor" />
+/// <seealso cref="GlfwCursor" />
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct Cursor : IEquatable<Cursor>
+public readonly struct GlfwCursor : IEquatable<GlfwCursor>
 {
     /// <summary>
-    ///     Represents a <c>null</c> value for a <see cref="Cursor" /> object.
+    ///     Represents a <c>null</c> value for a <see cref="GlfwCursor" /> object.
     /// </summary>
-    public static readonly Cursor None;
+    public static readonly GlfwCursor None;
 
     /// <summary>
     ///     Internal pointer.
     /// </summary>
-    private readonly IntPtr cursor;
+    private readonly nint cursor;
 
     /// <summary>
-    ///     Determines whether the specified <see cref="Cursor" />, is equal to this instance.
+    ///     Determines whether the specified <see cref="GlfwCursor" />, is equal to this instance.
     /// </summary>
-    /// <param name="other">The <see cref="Cursor" /> to compare with this instance.</param>
+    /// <param name="other">The <see cref="GlfwCursor" /> to compare with this instance.</param>
     /// <returns>
-    ///     <c>true</c> if the specified <see cref="Cursor" /> is equal to this instance; otherwise, <c>false</c>.
+    ///     <c>true</c> if the specified <see cref="GlfwCursor" /> is equal to this instance; otherwise, <c>false</c>.
     /// </returns>
-    public bool Equals(Cursor other) { return cursor.Equals(other.cursor); }
+    public bool Equals(GlfwCursor other) { return cursor.Equals(other.cursor); }
 
     /// <summary>
     ///     Determines whether the specified <see cref="object" />, is equal to this instance.
@@ -38,7 +38,7 @@ public readonly struct Cursor : IEquatable<Cursor>
     /// </returns>
     public override bool Equals(object? obj)
     {
-        if (obj is Cursor cur)
+        if (obj is GlfwCursor cur)
             return Equals(cur);
         return false;
     }
@@ -59,7 +59,7 @@ public readonly struct Cursor : IEquatable<Cursor>
     /// <returns>
     ///     The result of the operator.
     /// </returns>
-    public static bool operator ==(Cursor left, Cursor right) { return left.Equals(right); }
+    public static bool operator ==(GlfwCursor left, GlfwCursor right) { return left.Equals(right); }
 
     /// <summary>
     ///     Implements the operator !=.
@@ -69,5 +69,5 @@ public readonly struct Cursor : IEquatable<Cursor>
     /// <returns>
     ///     The result of the operator.
     /// </returns>
-    public static bool operator !=(Cursor left, Cursor right) { return !left.Equals(right); }
+    public static bool operator !=(GlfwCursor left, GlfwCursor right) { return !left.Equals(right); }
 }

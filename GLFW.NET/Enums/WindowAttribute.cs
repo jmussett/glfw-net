@@ -57,4 +57,4 @@ public enum WindowAttribute
     ///     windows between.
     /// </summary>
     MouseHover = 0x0002000B
-    }
+}

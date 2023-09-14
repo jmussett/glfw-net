@@ -17,16 +17,16 @@ public readonly struct EGLSurface : IEquatable<EGLSurface>
     /// <summary>
     ///     Internal pointer.
     /// </summary>
-    private readonly IntPtr handle;
+    private readonly nint handle;
 
     /// <summary>
-    ///     Performs an implicit conversion from <see cref="EGLSurface" /> to <see cref="IntPtr" />.
+    ///     Performs an implicit conversion from <see cref="EGLSurface" /> to <see cref="nint" />.
     /// </summary>
     /// <param name="surface">The surface.</param>
     /// <returns>
     ///     The result of the conversion.
     /// </returns>
-    public static implicit operator IntPtr(EGLSurface surface) { return surface.handle; }
+    public static implicit operator nint(EGLSurface surface) { return surface.handle; }
 
     /// <summary>
     ///     Returns a <see cref="System.String" /> that represents this instance.

@@ -1,6 +1,8 @@
 # GLFW.NET
 Complete, cross-platform, managed wrapper around the GLFW library for creating native windows with an OpenGL context.
 
+Forked and improved from [Eric Freed's original implementation](https://github.com/ForeverZer0/glfw-net)
+
 ## Features
 * Wraps 100% of the GLFW library (3.3), including Vulkan
 * Cross-platform

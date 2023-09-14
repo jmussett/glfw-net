@@ -18,16 +18,16 @@ public readonly struct GLXContext : IEquatable<GLXContext>
     /// <summary>
     ///     Internal pointer.
     /// </summary>
-    private readonly IntPtr handle;
+    private readonly nint handle;
 
     /// <summary>
-    ///     Performs an implicit conversion from <see cref="GLXContext" /> to <see cref="IntPtr" />.
+    ///     Performs an implicit conversion from <see cref="GLXContext" /> to <see cref="nint" />.
     /// </summary>
     /// <param name="context">The context.</param>
     /// <returns>
     ///     The result of the conversion.
     /// </returns>
-    public static implicit operator IntPtr(GLXContext context) { return context.handle; }
+    public static implicit operator nint(GLXContext context) { return context.handle; }
 
     /// <summary>
     ///     Returns a <see cref="string" /> that represents this instance.

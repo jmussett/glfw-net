@@ -17,16 +17,16 @@ public readonly struct HGLRC : IEquatable<HGLRC>
     /// <summary>
     ///     Internal pointer.
     /// </summary>
-    private readonly IntPtr handle;
+    private readonly nint handle;
 
     /// <summary>
-    ///     Performs an implicit conversion from <see cref="HGLRC" /> to <see cref="IntPtr" />.
+    ///     Performs an implicit conversion from <see cref="HGLRC" /> to <see cref="nint" />.
     /// </summary>
     /// <param name="hglrc">The hglrc.</param>
     /// <returns>
     ///     The result of the conversion.
     /// </returns>
-    public static implicit operator IntPtr(HGLRC hglrc) { return hglrc.handle; }
+    public static implicit operator nint(HGLRC hglrc) { return hglrc.handle; }
 
     /// <summary>
     ///     Returns a <see cref="System.String" /> that represents this instance.

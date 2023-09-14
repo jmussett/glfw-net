@@ -55,18 +55,18 @@
         {
             if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                return Native.GetWglContext(nativeWindow);
+                return Glfw.Native.GetWglContext(nativeWindow);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 // XServer
-                return Native.GetGLXContext(nativeWindow);
+                return Glfw.Native.GetGLXContext(nativeWindow);
                 // Wayland
                 //return Native.GetEglContext(nativeWindow);
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                return Native.GetNSGLContext(nativeWindow);
+                return Glfw.Native.GetNSGLContext(nativeWindow);
             }
             
             throw new PlatformNotSupportedException();

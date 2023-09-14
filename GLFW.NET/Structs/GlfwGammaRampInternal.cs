@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace GLFW;
 
@@ -9,14 +8,14 @@ namespace GLFW;
 ///     Used internally for marshalling
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-internal readonly struct GammaRampInternal
+internal readonly struct GlfwGammaRampInternal
 {
-    public readonly IntPtr Red;
-    public readonly IntPtr Green;
-    public readonly IntPtr Blue;
+    public readonly nint Red;
+    public readonly nint Green;
+    public readonly nint Blue;
     public readonly int Size;
 
-    public static explicit operator GammaRamp(GammaRampInternal ramp)
+    public static explicit operator GlfwGammaRamp(GlfwGammaRampInternal ramp)
     {
         var offset = 0;
         var red = new ushort[ramp.Size];
@@ -29,6 +28,6 @@ internal readonly struct GammaRampInternal
             blue[i] = unchecked((ushort) Marshal.ReadInt16(ramp.Blue, offset));
         }
 
-        return new GammaRamp(red, green, blue);
+        return new GlfwGammaRamp(red, green, blue);
     }
 }

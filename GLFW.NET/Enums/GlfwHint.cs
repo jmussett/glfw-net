@@ -7,7 +7,7 @@ namespace GLFW;
 /// <summary>
 ///     Strongly-typed values for setting window hints.
 /// </summary>
-public enum Hint
+public enum GlfwHint
 {
     /// <summary>
     ///     Specifies whether the windowed mode window will be given input focus when created. This hint is ignored for full

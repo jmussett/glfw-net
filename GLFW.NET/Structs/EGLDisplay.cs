@@ -17,16 +17,16 @@ public readonly struct EGLDisplay : IEquatable<EGLDisplay>
     /// <summary>
     ///     Internal pointer.
     /// </summary>
-    private readonly IntPtr handle;
+    private readonly nint handle;
 
     /// <summary>
-    ///     Performs an implicit conversion from <see cref="EGLDisplay" /> to <see cref="IntPtr" />.
+    ///     Performs an implicit conversion from <see cref="EGLDisplay" /> to <see cref="nint" />.
     /// </summary>
     /// <param name="display">The display.</param>
     /// <returns>
     ///     The result of the conversion.
     /// </returns>
-    public static implicit operator IntPtr(EGLDisplay display) { return display.handle; }
+    public static implicit operator nint(EGLDisplay display) { return display.handle; }
 
     /// <summary>
     ///     Returns a <see cref="System.String" /> that represents this instance.

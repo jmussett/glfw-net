@@ -11,7 +11,7 @@ namespace OpenGL
     ///     Returns a function pointer for the OpenGL function with the specified name. 
     /// </summary>
     /// <param name="funcName">The name of the function to lookup.</param>
-    public delegate IntPtr GetProcAddressHandler(string funcName);
+    public delegate nint GetProcAddressHandler(string funcName);
 
     /// <summary>
     ///     Provides bindings for OpenGL 3.3 Core Profile.
@@ -19,7 +19,7 @@ namespace OpenGL
     [SuppressUnmanagedCodeSecurity]
     public static unsafe partial class Gl
     {
-        private static string PtrToStringUtf8(IntPtr ptr)
+        private static string PtrToStringUtf8(nint ptr)
         {
             var length = 0;
             while (Marshal.ReadByte(ptr, length) != 0)
@@ -29,7 +29,7 @@ namespace OpenGL
             return Encoding.UTF8.GetString(buffer);
         }
         
-        private static string PtrToStringUtf8(IntPtr ptr, int length)
+        private static string PtrToStringUtf8(nint ptr, int length)
         {
             var buffer = new byte[length];
             Marshal.Copy(ptr, buffer, 0, length);
@@ -38,7 +38,7 @@ namespace OpenGL
         
         /// <summary>
         ///     The unsafe NULL pointer.
-        ///     <para>Analog of IntPtr.Zero.</para>
+        ///     <para>Analog of nint.Zero.</para>
         /// </summary>
         public static readonly void* NULL = (void*) 0;
         
@@ -397,7 +397,7 @@ namespace OpenGL
         ///     </para>
         ///     .
         /// </param>
-        public static void glBufferData(int target, int size, IntPtr data, int usage) => _glBufferData(target, new IntPtr(size), data.ToPointer(), usage);
+        public static void glBufferData(int target, int size, nint data, int usage) => _glBufferData(target, new IntPtr(size), ((IntPtr)data).ToPointer(), usage);
 
         /// <summary>
         ///     Creates and initializes a buffer object's data store.
@@ -601,7 +601,7 @@ namespace OpenGL
         /// <param name="format">Specifies a pixel format for the returned data. </param>
         /// <param name="type">Specifies a pixel type for the returned data.</param>
         /// <param name="pixels">Returns the texture image. Should be a pointer to an array of the type specified by type.</param>
-        public static void glGetTexImage(int target, int level, int format, int type, IntPtr pixels) => _glGetTexImage(target, level, format, type, pixels.ToPointer());
+        public static void glGetTexImage(int target, int level, int format, int type, nint pixels) => _glGetTexImage(target, level, format, type, ((IntPtr) pixels).ToPointer());
 
         /// <summary>
         ///     Read a block of pixels from the frame buffer.
@@ -625,7 +625,7 @@ namespace OpenGL
         /// <param name="format">Specifies the format of the pixel data.</param>
         /// <param name="type">Specifies the data type of the pixel data.</param>
         /// <param name="pixels">A pointer where the pixel data will be written.<para>Must have enough memory allocated for the desired dimensions and pixel format.</para></param>
-        public static void glReadPixels(int x, int y, int width, int height, int format, int type, IntPtr pixels) => _glReadPixels(x, y, width, height, format, type, pixels.ToPointer());
+        public static void glReadPixels(int x, int y, int width, int height, int format, int type, nint pixels) => _glReadPixels(x, y, width, height, format, type, ((IntPtr) pixels).ToPointer());
 
         /// <summary>
         ///     Read a block of pixels from the frame buffer.
@@ -685,7 +685,7 @@ namespace OpenGL
         ///     Specifies the data type of the pixel data.
         /// </param>
         /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-        public static void glTexImage1D(int target, int level, int internalFormat, int width, int border, int format, int type, IntPtr pixels) => _glTexImage1D(target, level, internalFormat, width, border, format, type, pixels.ToPointer());
+        public static void glTexImage1D(int target, int level, int internalFormat, int width, int border, int format, int type, nint pixels) => _glTexImage1D(target, level, internalFormat, width, border, format, type, ((IntPtr) pixels).ToPointer());
 
         /// <summary>
         ///     Specify a one-dimensional texture image.
@@ -738,7 +738,7 @@ namespace OpenGL
         ///     Specifies the data type of the pixel data.
         /// </param>
         /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-        public static void glTexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, IntPtr pixels) => _glTexImage2D(target, level, internalFormat, width, height, border, format, type, pixels.ToPointer());
+        public static void glTexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, nint pixels) => _glTexImage2D(target, level, internalFormat, width, height, border, format, type, ((IntPtr) pixels).ToPointer());
 
         /// <summary>
         ///     Specify a two-dimensional texture image.
@@ -799,7 +799,7 @@ namespace OpenGL
         ///     Specifies the data type of the pixel data.
         /// </param>
         /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-        public static void glTexImage3D(int target, int level, int internalFormat, int width, int height, int depth, int border, int format, int type, IntPtr pixels) => _glTexImage3D(target, level, internalFormat, width, height, depth, border, format, type, pixels.ToPointer());
+        public static void glTexImage3D(int target, int level, int internalFormat, int width, int height, int depth, int border, int format, int type, nint pixels) => _glTexImage3D(target, level, internalFormat, width, height, depth, border, format, type, ((IntPtr) pixels).ToPointer());
 
         /// <summary>
         ///     Specify a three-dimensional texture image.
@@ -979,7 +979,7 @@ namespace OpenGL
         ///     A pointer where the pixel data will be written.
         ///     <para>Enough memory must be allocated at this location for the data to written.</para>
         /// </param>
-        public static void glGetCompressedTexImage(int target, int level, IntPtr pixels) => _glGetCompressedTexImage(target, level, pixels.ToPointer());
+        public static void glGetCompressedTexImage(int target, int level, nint pixels) => _glGetCompressedTexImage(target, level, ((IntPtr) pixels).ToPointer());
 
         /// <summary>
         ///     Returns a compressed texture image.
@@ -1161,7 +1161,7 @@ namespace OpenGL
         ///     Specifies the timeout that the server should wait before continuing.
         ///     <para>Must be GL_TIMEOUT_IGNORED.</para>
         /// </param>
-        public static void glWaitSync(IntPtr sync, uint flags, ulong timeout) => _glWaitSync(sync, flags, timeout);
+        public static void glWaitSync(nint sync, uint flags, ulong timeout) => _glWaitSync(sync, flags, timeout);
 
         /// <summary>
         ///     Create a new sync object and insert it into the GL command stream.
@@ -1173,20 +1173,20 @@ namespace OpenGL
         ///     <para>No flags are presently defined for this operation and flags must be zero.</para>
         /// </param>
         /// <returns>The sync object reference.</returns>
-        public static IntPtr glFenceSync(int condition, uint flags = 0) => _glFenceSync(condition, flags);
+        public static nint glFenceSync(int condition, uint flags = 0) => _glFenceSync(condition, flags);
 
         /// <summary>
         ///     Delete a sync object
         /// </summary>
         /// <param name="sync">The sync object to be deleted.</param>
-        public static void glDeleteSync(IntPtr sync) => _glDeleteSync(sync);
+        public static void glDeleteSync(nint sync) => _glDeleteSync(sync);
         
         /// <summary>
         ///     Determines if a name corresponds to a sync object.
         /// </summary>
         /// <param name="sync">Specifies a value that may be the name of a sync object.</param>
         /// <returns><c>true</c> if sync is currently the name of a sync object, otherwise <c>false</c>.</returns>
-        public static bool glIsSync(IntPtr sync) => _glIsSync(sync);
+        public static bool glIsSync(nint sync) => _glIsSync(sync);
 
         /// <summary>
         ///     Block and wait for a sync object to become signaled.
@@ -1198,7 +1198,7 @@ namespace OpenGL
         ///     become signaled.
         /// </param>
         /// <returns>The status, which will be GL_ALREADY_SIGNALED, GL_TIMEOUT_EXPIRED, GL_CONDITION_SATISFIED, or GL_WAIT_FAILED.</returns>
-        public static int glClientWaitSync(IntPtr sync, uint flags, ulong timeout) => _glClientWaitSync(sync, flags, timeout);
+        public static int glClientWaitSync(nint sync, uint flags, ulong timeout) => _glClientWaitSync(sync, flags, timeout);
 
         /// <summary>
         /// Return the value or values of a selected parameter.
@@ -1633,7 +1633,7 @@ namespace OpenGL
         /// </param>
         /// <param name="type">Specifies the data type of the pixel data.</param>
         /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-        public static void glTexSubImage1D(int target, int level, int xOffset, int width, int format, int type, IntPtr pixels) => _glTexSubImage1D(target, level, xOffset, width, format, type, pixels.ToPointer());
+        public static void glTexSubImage1D(int target, int level, int xOffset, int width, int format, int type, nint pixels) => _glTexSubImage1D(target, level, xOffset, width, format, type, ((IntPtr) pixels).ToPointer());
         
         /// <summary>
         ///     Specify a two-dimensional texture sub-image.
@@ -1651,7 +1651,7 @@ namespace OpenGL
         /// </param>
         /// <param name="type">Specifies the data type of the pixel data.</param>
         /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
-        public static void glTexSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, IntPtr pixels) => _glTexSubImage2D(target, level, xOffset, yOffset, width, height, format, type, pixels.ToPointer());
+        public static void glTexSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, nint pixels) => _glTexSubImage2D(target, level, xOffset, yOffset, width, height, format, type, ((IntPtr) pixels).ToPointer());
 
         /// <summary>
         ///     Specify a three-dimensional texture sub-image.
@@ -1674,8 +1674,8 @@ namespace OpenGL
         /// <param name="type">Specifies the data type of the pixel data.</param>
         /// <param name="pixels">Specifies a pointer to the image data in memory.</param>
         public static void glTexSubImage3D(int target, int level, int xOffset, int yOffset, int zOffset, int width,
-            int height, int depth, int format, int type, IntPtr pixels) => _glTexSubImage3D(target, level,
-            xOffset, yOffset, zOffset, width, height, depth, format, type, pixels.ToPointer());
+            int height, int depth, int format, int type, nint pixels) => _glTexSubImage3D(target, level,
+            xOffset, yOffset, zOffset, width, height, depth, format, type, ((IntPtr) pixels).ToPointer());
         
         /// <summary>
         ///     Specify a one-dimensional texture sub-image.
@@ -1833,7 +1833,7 @@ namespace OpenGL
         ///     <para>The symbolic constant must be GL_READ_ONLY, GL_WRITE_ONLY, or GL_READ_WRITE.</para>
         /// </param>
         /// <returns>A pointer to the beginning of the mapped range.</returns>
-        public static IntPtr glMapBuffer(int target, int access) => new(_glMapBuffer(target, access));
+        public static nint glMapBuffer(int target, int access) => new IntPtr(_glMapBuffer(target, access));
 
         /// <summary>
         ///     Release the mapping of a buffer object's data store into the client's address space.
@@ -1880,7 +1880,7 @@ namespace OpenGL
         /// <param name="border">This value must be 0.</param>
         /// <param name="imageSize">Specifies the number of unsigned bytes of image data starting at the address specified by <paramref name="data"/>.</param>
         /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-        public static void glCompressedTexImage3D(int target, int level, int internalFormat, int width, int height, int depth, int border, int imageSize, IntPtr data) => _glCompressedTexImage3D(target, level, internalFormat, width, height, depth, border, imageSize, data.ToPointer());
+        public static void glCompressedTexImage3D(int target, int level, int internalFormat, int width, int height, int depth, int border, int imageSize, nint data) => _glCompressedTexImage3D(target, level, internalFormat, width, height, depth, border, imageSize, ((IntPtr) data).ToPointer());
 
         /// <summary>
         /// Specify a two-dimensional texture image in a compressed format
@@ -1893,7 +1893,7 @@ namespace OpenGL
         /// <param name="border">This value must be 0.</param>
         /// <param name="imageSize">Specifies the number of unsigned bytes of image data starting at the address specified by <paramref name="data"/>.</param>
         /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-        public static void glCompressedTexImage2D(int target, int level, int internalFormat, int width, int height, int border, int imageSize, IntPtr data) => _glCompressedTexImage2D(target, level, internalFormat, width, height, border, imageSize, data.ToPointer());
+        public static void glCompressedTexImage2D(int target, int level, int internalFormat, int width, int height, int border, int imageSize, nint data) => _glCompressedTexImage2D(target, level, internalFormat, width, height, border, imageSize, ((IntPtr) data).ToPointer());
 
         /// <summary>
         /// Specify a one-dimensional texture image in a compressed format.
@@ -1905,7 +1905,7 @@ namespace OpenGL
         /// <param name="border">This value must be 0.</param>
         /// <param name="imageSize">Specifies the number of unsigned bytes of image data starting at the address specified by <paramref name="data"/>.</param>
         /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-        public static void glCompressedTexImage1D(int target, int level, int internalFormat, int width, int border, int imageSize, IntPtr data) => _glCompressedTexImage1D(target, level, internalFormat, width, border, imageSize, data.ToPointer());
+        public static void glCompressedTexImage1D(int target, int level, int internalFormat, int width, int border, int imageSize, nint data) => _glCompressedTexImage1D(target, level, internalFormat, width, border, imageSize, ((IntPtr) data).ToPointer());
         
         /// <summary>
         /// Specify a three-dimensional texture image in a compressed format.
@@ -1960,7 +1960,7 @@ namespace OpenGL
         /// <param name="format">Specifies the format of the compressed image data stored at address <paramref name="data"/>.</param>
         /// <param name="imageSize">Specifies the number of unsigned bytes of image data starting at the address specified by <paramref name="data"/>.</param>
         /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-        public static void glCompressedTexSubImage3D(int target, int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, int format, int imageSize, IntPtr data) => _glCompressedTexSubImage3D(target, level, xOffset, yOffset, zOffset, width, height, depth, format, imageSize, data.ToPointer());
+        public static void glCompressedTexSubImage3D(int target, int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, int format, int imageSize, nint data) => _glCompressedTexSubImage3D(target, level, xOffset, yOffset, zOffset, width, height, depth, format, imageSize, ((IntPtr) data).ToPointer());
 
         /// <summary>
         /// Specify a two-dimensional texture sub-image in a compressed format.
@@ -1974,7 +1974,7 @@ namespace OpenGL
         /// <param name="format">Specifies the format of the compressed image data stored at address <paramref name="data"/>.</param>
         /// <param name="imageSize">Specifies the number of unsigned bytes of image data starting at the address specified by <paramref name="data"/>.</param>
         /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-        public static void glCompressedTexSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int imageSize, IntPtr data) => _glCompressedTexSubImage2D(target, level, xOffset, yOffset, width, height, format, imageSize, data.ToPointer());
+        public static void glCompressedTexSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int imageSize, nint data) => _glCompressedTexSubImage2D(target, level, xOffset, yOffset, width, height, format, imageSize, ((IntPtr) data).ToPointer());
 
         /// <summary>
         /// Specify a one-dimensional texture sub-image in a compressed format.
@@ -1986,7 +1986,7 @@ namespace OpenGL
         /// <param name="format">Specifies the format of the compressed image data stored at address <paramref name="data"/>.</param>
         /// <param name="imageSize">Specifies the number of unsigned bytes of image data starting at the address specified by <paramref name="data"/>.</param>
         /// <param name="data">Specifies a pointer to the compressed image data in memory.</param>
-        public static void glCompressedTexSubImage1D(int target, int level, int xOffset, int width, int format, int imageSize, IntPtr data) => _glCompressedTexSubImage1D(target, level, xOffset, width, format, imageSize, data.ToPointer());
+        public static void glCompressedTexSubImage1D(int target, int level, int xOffset, int width, int format, int imageSize, nint data) => _glCompressedTexSubImage1D(target, level, xOffset, width, format, imageSize, ((IntPtr) data).ToPointer());
 
         /// <summary>
         /// Specify a three-dimensional texture sub-image in a compressed format.
@@ -2782,10 +2782,10 @@ namespace OpenGL
         /// </param>
         /// <param name="indices">Specifies a pointer to the location where the indices are stored.</param>
         /// <param name="drawCount">Specifies the size of the count and indices arrays.</param>
-        public static void glMultiDrawElements(int mode, [NotNull] int[] count, int type, IntPtr indices, int drawCount)
+        public static void glMultiDrawElements(int mode, [NotNull] int[] count, int type, nint indices, int drawCount)
         {
             // Test this actually works
-            var ptr = (void**) indices.ToPointer();
+            var ptr = (void**)((IntPtr)indices).ToPointer();
             fixed (int* c = &count[0])
             {
                 _glMultiDrawElements(mode, c, type, ptr, drawCount);
@@ -2866,7 +2866,7 @@ namespace OpenGL
         /// </param>
         /// <param name="size">Specifies the size in bytes of the data store region being returned.</param>
         /// <param name="data">Specifies a pointer to the location where buffer object data is returned.</param>
-        public static void glGetBufferSubData(int target, int offset, int size, IntPtr data) => _glGetBufferSubData(target, new IntPtr(offset), new IntPtr(size), data.ToPointer());
+        public static void glGetBufferSubData(int target, int offset, int size, nint data) => _glGetBufferSubData(target, new IntPtr(offset), new IntPtr(size), ((IntPtr) data).ToPointer());
 
         /// <summary>
         ///     Returns a subset of a buffer object's data store.
@@ -2878,7 +2878,7 @@ namespace OpenGL
         /// </param>
         /// <param name="size">Specifies the size in bytes of the data store region being returned.</param>
         /// <param name="data">Specifies a pointer to the location where buffer object data is returned.</param>
-        public static void glGetBufferSubData(int target, long offset, long size, IntPtr data) => _glGetBufferSubData(target, new IntPtr(offset), new IntPtr(size), data.ToPointer());
+        public static void glGetBufferSubData(int target, long offset, long size, nint data) => _glGetBufferSubData(target, new IntPtr(offset), new IntPtr(size), ((IntPtr) data).ToPointer());
         
         /// <summary>
         ///     Returns a subset of a buffer object's data store.
@@ -2912,7 +2912,7 @@ namespace OpenGL
         /// <param name="length">Specifies the length of the range to be mapped.</param>
         /// <param name="access">Specifies a combination of access flags indicating the desired access to the mapped range.</param>
         /// <returns>A pointer to the beginning of the mapped range.</returns>
-        public static IntPtr glMapBufferRange(int target, int offset, int length, uint access) => new(_glMapBufferRange(target, new IntPtr(offset), new IntPtr(length), access));
+        public static nint glMapBufferRange(int target, int offset, int length, uint access) => new IntPtr(_glMapBufferRange(target, new IntPtr(offset), new IntPtr(length), access));
 
         /// <summary>
         ///     Map all or part of a buffer object's data store into the client's address space.
@@ -2922,7 +2922,7 @@ namespace OpenGL
         /// <param name="length">Specifies the length of the range to be mapped.</param>
         /// <param name="access">Specifies a combination of access flags indicating the desired access to the mapped range.</param>
         /// <returns>A pointer to the beginning of the mapped range.</returns>
-        public static IntPtr glMapBufferRange(int target, long offset, long length, uint access) => new(_glMapBufferRange(target, new IntPtr(offset), new IntPtr(length), access));
+        public static nint glMapBufferRange(int target, long offset, long length, uint access) => new IntPtr(_glMapBufferRange(target, new IntPtr(offset), new IntPtr(length), access));
         
         /// <summary>
         ///     Indicate modifications to a range of a mapped buffer.
@@ -3115,7 +3115,7 @@ namespace OpenGL
         /// </param>
         /// <param name="size">Specifies the size in bytes of the data store region being replaced.</param>
         /// <param name="data">Specifies a pointer to the new data that will be copied into the data store.</param>
-        public static void glBufferSubData(int target, int offset, int size, IntPtr data) => _glBufferSubData(target, new IntPtr(offset), new IntPtr(size), data.ToPointer());
+        public static void glBufferSubData(int target, int offset, int size, nint data) => _glBufferSubData(target, new IntPtr(offset), new IntPtr(size), ((IntPtr) data).ToPointer());
 
         /// <summary>
         ///     Updates a subset of a buffer object's data store.
@@ -3127,7 +3127,7 @@ namespace OpenGL
         /// </param>
         /// <param name="size">Specifies the size in bytes of the data store region being replaced.</param>
         /// <param name="data">Specifies a pointer to the new data that will be copied into the data store.</param>
-        public static void glBufferSubData(int target, long offset, long size, IntPtr data) => _glBufferSubData(target, new IntPtr(offset), new IntPtr(size), data.ToPointer());
+        public static void glBufferSubData(int target, long offset, long size, nint data) => _glBufferSubData(target, new IntPtr(offset), new IntPtr(size), ((IntPtr) data).ToPointer());
 
 
         /// <summary>
@@ -4994,7 +4994,7 @@ namespace OpenGL
         ///     Specifies a offset of the first component of the first generic vertex attribute in the array in
         ///     the data store of the buffer currently bound to the GL_ARRAY_BUFFER target.
         /// </param>
-        public static void glVertexAttribPointer(uint index, int size, int type, bool normalized, int stride, IntPtr pointer) => _glVertexAttribPointer(index, size, type, normalized, stride, pointer.ToPointer());
+        public static void glVertexAttribPointer(uint index, int size, int type, bool normalized, int stride, nint pointer) => _glVertexAttribPointer(index, size, type, normalized, stride, ((IntPtr)pointer).ToPointer());
 
         /// <summary>
         ///     Return sampler parameter value(s).
@@ -6307,7 +6307,7 @@ namespace OpenGL
         /// <param name="type">Specifies the data type of each component in the array.</param>
         /// <param name="stride">Specifies the byte offset between consecutive generic vertex attributes.<para>If stride is 0, the generic vertex attributes are understood to be tightly packed in the array.</para>The initial value is 0.</param>
         /// <param name="pointer">Specifies a offset of the first component of the first generic vertex attribute in the array in the data store of the buffer currently bound to the GL_ARRAY_BUFFER target.<para>The initial value is 0.</para></param>
-        public static void glVertexAttribIPointer(uint index, int size, int type, int stride, IntPtr pointer) => _glVertexAttribIPointer(index, size, type, stride, pointer.ToPointer());
+        public static void glVertexAttribIPointer(uint index, int size, int type, int stride, nint pointer) => _glVertexAttribIPointer(index, size, type, stride, ((IntPtr)pointer).ToPointer());
         
         
         /// <summary>
@@ -6618,7 +6618,7 @@ namespace OpenGL
         /// <param name="index">Specifies the generic vertex attribute parameter to be returned.</param>
         /// <param name="pname">Specifies the symbolic name of the generic vertex attribute parameter to be returned.<para>Must be GL_VERTEX_ATTRIB_ARRAY_POINTER.</para></param>
         /// <returns>The pointer value.</returns>
-        public static IntPtr glGetVertexAttribPointerv(uint index, int pname)
+        public static nint glGetVertexAttribPointerv(uint index, int pname)
         {
             _glGetVertexAttribPointerv(index, pname, out var pointer);
             return pointer;
@@ -6630,7 +6630,7 @@ namespace OpenGL
         /// <param name="target">Specifies the target to which the buffer object is bound.</param>
         /// <param name="pname">Specifies the name of the pointer to be returned.<para>Must be GL_BUFFER_MAP_POINTER.</para></param>
         /// <returns>Returns the pointer value specified by pname.</returns>
-        public static IntPtr glGetBufferPointerv(int target, int pname)
+        public static nint glGetBufferPointerv(int target, int pname)
         {
             _glGetBufferPointerv(target, pname, out var pointer);
             return pointer;
@@ -6764,7 +6764,7 @@ namespace OpenGL
         /// <param name="bufSize">Specifies the size of the buffer whose address is given in <paramref name="values"/>.</param>
         /// <param name="length">Specifies the address of an variable to receive the number of integers placed in <paramref name="values"/>.</param>
         /// <param name="values">Specifies the address of an array to receive the values of the queried parameter.</param>
-        public static void glGetSynciv(IntPtr sync, int pname, int bufSize, int* length, int* values) => _glGetSynciv(sync, pname, bufSize, length, values);
+        public static void glGetSynciv(nint sync, int pname, int bufSize, int* length, int* values) => _glGetSynciv(sync, pname, bufSize, length, values);
 
         /// <summary>
         /// Query the properties of a sync object.
@@ -6774,7 +6774,7 @@ namespace OpenGL
         /// <param name="count">The number of properties to retrieve.</param>
         /// <param name="length">Specifies the number of integers placed in the return value.</param>
         /// <returns>The specified properties.</returns>
-        public static int[] glGetSynciv(IntPtr sync, int pname, int count, out int length)
+        public static int[] glGetSynciv(nint sync, int pname, int count, out int length)
         {
             var bufSize = count * sizeof(int);
             var values = new int[count];
@@ -8281,13 +8281,13 @@ namespace OpenGL
 		private delegate bool PFNGLISBUFFERPROC(uint buffer);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLBUFFERDATAPROC(int target, IntPtr size, /*const*/ void *data, int usage);
+		private delegate void PFNGLBUFFERDATAPROC(int target, nint size, /*const*/ void *data, int usage);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLBUFFERSUBDATAPROC(int target, IntPtr offset, IntPtr size, /*const*/ void *data);
+		private delegate void PFNGLBUFFERSUBDATAPROC(int target, nint offset, nint size, /*const*/ void *data);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLGETBUFFERSUBDATAPROC(int target, IntPtr offset, IntPtr size, void *data);
+		private delegate void PFNGLGETBUFFERSUBDATAPROC(int target, nint offset, nint size, void *data);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void *PFNGLMAPBUFFERPROC(int target, int access);
@@ -8299,7 +8299,7 @@ namespace OpenGL
 		private delegate void PFNGLGETBUFFERPARAMETERIVPROC(int target, int pname, int*args);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLGETBUFFERPOINTERVPROC(int target, int pname, out IntPtr args);
+		private delegate void PFNGLGETBUFFERPOINTERVPROC(int target, int pname, out nint args);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void PFNGLBLENDEQUATIONSEPARATEPROC(int modeRGB, int modeAlpha);
@@ -8347,10 +8347,10 @@ namespace OpenGL
 		private delegate void PFNGLENABLEVERTEXATTRIBARRAYPROC(uint index);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLGETACTIVEATTRIBPROC(uint program, uint index, int bufSize, out int length, out int size, out int type, IntPtr name);
+		private delegate void PFNGLGETACTIVEATTRIBPROC(uint program, uint index, int bufSize, out int length, out int size, out int type, nint name);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLGETACTIVEUNIFORMPROC(uint program, uint index, int bufSize, out int length, out int size, out int type, IntPtr name);
+		private delegate void PFNGLGETACTIVEUNIFORMPROC(uint program, uint index, int bufSize, out int length, out int size, out int type, nint name);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void PFNGLGETATTACHEDSHADERSPROC(uint program, int maxCount, int*count, uint*shaders);
@@ -8392,7 +8392,7 @@ namespace OpenGL
 		private delegate void PFNGLGETVERTEXATTRIBIVPROC(uint index, int pname, int*args);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLGETVERTEXATTRIBPOINTERVPROC(uint index, int pname, out IntPtr pointer);
+		private delegate void PFNGLGETVERTEXATTRIBPOINTERVPROC(uint index, int pname, out nint pointer);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate bool PFNGLISPROGRAMPROC(uint program);
@@ -8623,7 +8623,7 @@ namespace OpenGL
 		private delegate void PFNGLENDTRANSFORMFEEDBACKPROC();
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLBINDBUFFERRANGEPROC(int target, uint index, uint buffer, IntPtr offset, IntPtr size);
+		private delegate void PFNGLBINDBUFFERRANGEPROC(int target, uint index, uint buffer, nint offset, nint size);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void PFNGLBINDBUFFERBASEPROC(int target, uint index, uint buffer);
@@ -8632,7 +8632,7 @@ namespace OpenGL
 		private delegate void PFNGLTRANSFORMFEEDBACKVARYINGSPROC(uint program, int count, /*const*/ byte**varyings, int bufferMode);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLGETTRANSFORMFEEDBACKVARYINGPROC(uint program, uint index, int bufSize, out int length, out int size, out int type, IntPtr name);
+		private delegate void PFNGLGETTRANSFORMFEEDBACKVARYINGPROC(uint program, uint index, int bufSize, out int length, out int size, out int type, nint name);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void PFNGLCLAMPCOLORPROC(int target, int clamp);
@@ -8833,10 +8833,10 @@ namespace OpenGL
 		private delegate void PFNGLFRAMEBUFFERTEXTURELAYERPROC(int target, int attachment, uint texture, int level, int layer);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void *PFNGLMAPBUFFERRANGEPROC(int target, IntPtr offset, IntPtr length, uint access);
+		private delegate void *PFNGLMAPBUFFERRANGEPROC(int target, nint offset, nint length, uint access);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLFLUSHMAPPEDBUFFERRANGEPROC(int target, IntPtr offset, IntPtr length);
+		private delegate void PFNGLFLUSHMAPPEDBUFFERRANGEPROC(int target, nint offset, nint length);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void PFNGLBINDVERTEXARRAYPROC(uint array);
@@ -8863,7 +8863,7 @@ namespace OpenGL
 		private delegate void PFNGLPRIMITIVERESTARTINDEXPROC(uint index);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLCOPYBUFFERSUBDATAPROC(int readTarget, int writeTarget, IntPtr readOffset, IntPtr writeOffset, IntPtr size);
+		private delegate void PFNGLCOPYBUFFERSUBDATAPROC(int readTarget, int writeTarget, nint readOffset, nint writeOffset, nint size);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void PFNGLGETUNIFORMINDICESPROC(uint program, int uniformCount, /*const*/ byte**uniformNames, uint*uniformIndices);
@@ -8902,25 +8902,25 @@ namespace OpenGL
 		private delegate void PFNGLPROVOKINGVERTEXPROC(int mode);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate IntPtr PFNGLFENCESYNCPROC(int condition, uint flags);
+		private delegate nint PFNGLFENCESYNCPROC(int condition, uint flags);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate bool PFNGLISSYNCPROC(IntPtr sync);
+		private delegate bool PFNGLISSYNCPROC(nint sync);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLDELETESYNCPROC(IntPtr sync);
+		private delegate void PFNGLDELETESYNCPROC(nint sync);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate int PFNGLCLIENTWAITSYNCPROC(IntPtr sync, uint flags, ulong timeout);
+		private delegate int PFNGLCLIENTWAITSYNCPROC(nint sync, uint flags, ulong timeout);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLWAITSYNCPROC(IntPtr sync, uint flags, ulong timeout);
+		private delegate void PFNGLWAITSYNCPROC(nint sync, uint flags, ulong timeout);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void PFNGLGETINTEGER64VPROC(int pname, long*data);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate void PFNGLGETSYNCIVPROC(IntPtr sync, int pname, int bufSize, int*length, int*values);
+		private delegate void PFNGLGETSYNCIVPROC(nint sync, int pname, int bufSize, int*length, int*values);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		private delegate void PFNGLGETINTEGER64I_VPROC(int target, uint index, long*data);

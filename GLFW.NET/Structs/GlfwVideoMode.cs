@@ -6,7 +6,7 @@ namespace GLFW;
 ///     Structure that describes a single video mode.
 /// </summary>
 [StructLayout(LayoutKind.Explicit, Size = 24, Pack = 4)]
-public readonly struct VideoMode
+public readonly struct GlfwVideoMode
 {
     /// <summary>
     ///     The width, in screen coordinates, of the video mode.

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace GLFW;
 
@@ -7,7 +6,7 @@ namespace GLFW;
 ///     Describes a basic image structure.
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
-public readonly struct Image
+public readonly struct GlfwImage
 {
     /// <summary>
     ///     The height, in pixels, of this image.
@@ -22,15 +21,15 @@ public readonly struct Image
     /// <summary>
     ///     Pointer to the RGBA pixel data of this image, arranged left-to-right, top-to-bottom.
     /// </summary>
-    public readonly IntPtr Pixels;
+    public readonly nint Pixels;
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="Image" /> struct.
+    ///     Initializes a new instance of the <see cref="GlfwImage" /> struct.
     /// </summary>
     /// <param name="width">The height, in pixels, of this image.</param>
     /// <param name="height">The width, in pixels, of this image..</param>
     /// <param name="pixels">Pointer to the RGBA pixel data of this image, arranged left-to-right, top-to-bottom.</param>
-    public Image(int width, int height, IntPtr pixels)
+    public GlfwImage(int width, int height, nint pixels)
     {
         Width = width;
         Height = height;

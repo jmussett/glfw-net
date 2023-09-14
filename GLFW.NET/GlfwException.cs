@@ -3,7 +3,7 @@
 /// <summary>
 /// Base exception class for GLFW related errors.
 /// </summary>
-public class Exception : System.Exception
+public class GlfwException : System.Exception
 {
     /// <summary>
     ///     Generic error messages if only an error code is supplied as an argument to the constructor.
@@ -29,14 +29,14 @@ public class Exception : System.Exception
     }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="Exception" /> class.
+    ///     Initializes a new instance of the <see cref="GlfwException" /> class.
     /// </summary>
     /// <param name="error">The error code to create a generic message from.</param>
-    public Exception(ErrorCode error) : base(GetErrorMessage(error)) { }
+    public GlfwException(ErrorCode error) : base(GetErrorMessage(error)) { }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="Exception" /> class.
+    ///     Initializes a new instance of the <see cref="GlfwException" /> class.
     /// </summary>
     /// <param name="message">The error message.</param>
-    public Exception(string message) : base(message) { }
+    public GlfwException(string message) : base(message) { }
 }
